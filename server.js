@@ -4,7 +4,10 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const app = express();
-
+const users = []; // This will be replaced by a database like MongoDB
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'your_secret_key';
 
 const corsOptions = {
     origin: 'http://localhost:4200', // Allow only your Angular app's origin
@@ -38,6 +41,67 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
+
+app.post('/register', async (req, res) => {
+  const { username, password } = req.body;
+
+  // Check if the user already exists
+  const existingUser = users.find(user => user.username === username);
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists' });
+  }
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10);
+  
+  // Store the user
+  const user = { username, password: hashedPassword };
+  users.push(user);
+
+  res.status(201).json({ message: 'User created successfully' });
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  
+  // Check if the user exists
+  const user = users.find(user => user.username === username);
+  if (!user) {
+    return res.status(400).json({ message: 'Invalid username or password' });
+  }
+
+  // Compare passwords
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: 'Invalid username or password' });
+  }
+
+  // Generate a JWT token
+  const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
+  res.status(200).json({ token });
+});
+
+const authMiddleware = (req, res, next) => {
+  const token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
+// Protect a route
+app.get('/protected-route', authMiddleware, (req, res) => {
+  res.status(200).json({ message: `Hello, ${req.user.username}` });
+});
+
 
 server.listen(3000, () => {
   console.log('Server is running on port 3000');
