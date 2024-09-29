@@ -8,6 +8,7 @@ const users = []; // This will be replaced by a database like MongoDB
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'your_secret_key';
+let rooms = [];
 
 const corsOptions = {
     origin: 'http://localhost:4200', // Allow only your Angular app's origin
@@ -33,6 +34,15 @@ const io = socketIo(server, {
 io.on('connection', (socket) => {
   console.log('A user connected');
 
+  socket.on('joinRoom', (room) => {
+    if (!rooms.includes(room)) {
+      return socket.emit('error', 'Room does not exist');
+    }
+
+    socket.join(room);
+    console.log(`User joined room ${room}`);
+  });
+
   socket.on('sendMessage', (message) => {
     io.emit('receiveMessage', message); // Broadcast the message to all clients
   });
@@ -40,6 +50,22 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
+});
+
+app.post('/createRoom', (req, res) => {
+  const { roomName } = req.body;
+
+  if (rooms.includes(roomName)) {
+    return res.status(400).json({ message: 'Room already exists' });
+  }
+
+  rooms.push(roomName);
+  res.status(201).json({ message: 'Room created successfully', roomName });
+});
+
+// API to get list of all rooms
+app.get('/rooms', (req, res) => {
+  res.json({ rooms });
 });
 
 app.post('/register', async (req, res) => {
