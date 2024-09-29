@@ -1,3 +1,13 @@
-<main class="main">
-  <router-outlet />
-</main>
+<div id="wrapper">
+  <header>
+    <div>
+      <a routerLink="/" routerLinkActive="active">Home</a>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    </div>
+  </header>
+  <main class="main">
+    <router-outlet />
+  </main>
+  <footer>{{ title }}</footer>
+</div>
