@@ -28,7 +28,6 @@ export class ChatRoomComponent {
   ) {}
 
   ngOnInit(): void {
-    console.log('Chat room component');
     this.subscription.push(
       this.route.params.subscribe((params) => {
         this.roomTitle = params['roomId'];
@@ -46,7 +45,6 @@ export class ChatRoomComponent {
   retrievePreviousMessages(): void {
     this.subscription.push(
       this.websocketService.onPreviousMessages().subscribe((message) => {
-        console.log('Previous messages', message);
         this.chatData = message;
       })
     );

@@ -49,7 +49,6 @@ export class RoomSelectionComponent {
     if (this.newRoomName.trim() === '') {
       return;
     }
-    console.log('Creating room:', this.newRoomName);
     this.subscriptions.push(
       this.http
         .post('http://localhost:3000/createRoom', {

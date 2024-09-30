@@ -17,7 +17,6 @@ export class WebsocketService {
 
   // Send message to the server
   sendMessage(room: string, user: string, message: string): void {
-    console.log('Sending message', { room, user, message });
     this.socket.emit('sendMessage', { room, user, message });
   }
 
