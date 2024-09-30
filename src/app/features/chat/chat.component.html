@@ -1,1 +1,7 @@
-<p class="message">{{ message }}</p>
+<div class="message">
+  <p class="message-header">
+    <span class="username">{{ chat.user }}</span>
+    <span class="time">{{ chat.timestamp | date : "short" }}</span>
+  </p>
+  <p>{{ chat.message }}</p>
+</div>
