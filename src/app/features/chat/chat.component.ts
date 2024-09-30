@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
-import { ChatRoomComponent } from '../chat-room/chat-room.component';
-import { MessageInputComponent } from '../message-input/message-input.component';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [ChatRoomComponent, MessageInputComponent],
+  imports: [],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
 })
-export class ChatComponent {}
+export class ChatComponent {
+  @Input() message = '';
+
+  ngOnInit(): void {
+    console.log('Chat component initialized', this.message);
+  }
+}

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './core/components/home/home.component';
 import { RegisterComponent } from './core/components/register/register.component';
 import { LoginComponent } from './core/components/login/login.component';
-import { ChatComponent } from './features/chat/chat.component';
+import { ChatRoomComponent } from './features/chat-room/chat-room.component';
 
 export const routes: Routes = [
   {
@@ -18,7 +18,7 @@ export const routes: Routes = [
     path: 'login',
   },
   {
-    component: ChatComponent,
-    path: 'chat',
+    component: ChatRoomComponent,
+    path: 'chat-room/:roomId',
   },
 ];

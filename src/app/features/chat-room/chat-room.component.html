@@ -1,5 +1,6 @@
-@for(message of messages; track $index) {
-<div class="message">
-  {{ message }}
+<div class="chat-container">
+  @for(item of chatData; track $index) {
+  <app-chat [message]="item.message"></app-chat>
+  }
+  <app-message-input [room]="activeRoom"></app-message-input>
 </div>
-}

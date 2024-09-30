@@ -16,15 +16,26 @@ export class WebsocketService {
   }
 
   // Send message to the server
-  sendMessage(message: string): void {
-    this.socket.emit('sendMessage', message);
+  sendMessage(room: string, user: string, message: string): void {
+    console.log('Sending message', { room, user, message });
+    this.socket.emit('sendMessage', { room, user, message });
   }
 
-  // Listen for incoming messages from the server
-  onMessage(): Observable<string> {
-    return new Observable<string>((observer) => {
-      this.socket.on('receiveMessage', (message: string) => {
-        observer.next(message);
+  onMessage(): Observable<{ user: string; message: string; timestamp: Date }> {
+    return new Observable((observer) => {
+      this.socket.on('receiveMessage', (data) => {
+        observer.next(data);
+      });
+    });
+  }
+
+  // Retrieve previous messages from the room
+  onPreviousMessages(): Observable<
+    { user: string; message: string; timestamp: Date }[]
+  > {
+    return new Observable((observer) => {
+      this.socket.on('previousMessage', (messages) => {
+        observer.next(messages);
       });
     });
   }

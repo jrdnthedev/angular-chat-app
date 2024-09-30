@@ -1,1 +1,21 @@
-<p>room-selection works!</p>
+<div class="room-selection">
+  <h2>Create or Join a Chat Room</h2>
+
+  <!-- Room Creation Form -->
+  <div class="room-creation">
+    <input [(ngModel)]="newRoomName" placeholder="Enter room name" />
+    <button (click)="createRoom()">Create Room</button>
+  </div>
+
+  <!-- Available Rooms List -->
+  <div class="room-list">
+    <h3>Available Rooms</h3>
+    <ul>
+      @for(room of objectKeys(rooms); track $index) {
+      <li>
+        <button (click)="joinRoom(room)">{{ room }}</button>
+      </li>
+      }
+    </ul>
+  </div>
+</div>

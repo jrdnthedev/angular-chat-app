@@ -8,7 +8,7 @@ const users = []; // This will be replaced by a database like MongoDB
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = 'your_secret_key';
-let rooms = [];
+let chatRooms = {};
 
 const corsOptions = {
     origin: 'http://localhost:4200', // Allow only your Angular app's origin
@@ -17,55 +17,69 @@ const corsOptions = {
     credentials: true
   };
 
-app.use(cors(corsOptions));
-
-const server = http.createServer(app);
-
-const io = socketIo(server, {
+const socketOptions = {
   cors: {
     origin: 'http://localhost:4200',  // Angular app URL
     methods: ['GET', 'POST'],
     allowedHeaders: ['my-custom-header'],
     credentials: true
   }
-});
+};
+app.use(express.json());
+app.use(cors(corsOptions));
+
+const server = http.createServer(app);
+
+const io = socketIo(server, socketOptions);
 
 
 io.on('connection', (socket) => {
   console.log('A user connected');
 
   socket.on('joinRoom', (room) => {
-    if (!rooms.includes(room)) {
-      return socket.emit('error', 'Room does not exist');
-    }
 
     socket.join(room);
     console.log(`User joined room ${room}`);
+
+    if (!chatRooms[room]) {
+      chatRooms[room] = [];
+      // return socket.emit('error', 'Room does not exist');
+    }
+
+    socket.emit('previousMessage', chatRooms[room]);
   });
 
-  socket.on('sendMessage', (message) => {
-    io.emit('receiveMessage', message); // Broadcast the message to all clients
+  socket.on('sendMessage', (data) => {
+    const { room, user, message } = data;
+
+    // Add the new message to the room's message array
+    const newMessage = { user, message, timestamp: new Date() };
+    chatRooms[room].push(newMessage);
+
+    // Broadcast the message to all users in the room
+    io.to(room).emit('receiveMessage', newMessage);
   });
 
   socket.on('disconnect', () => {
     console.log('User disconnected');
   });
+
 });
 
 app.post('/createRoom', (req, res) => {
   const { roomName } = req.body;
 
-  if (rooms.includes(roomName)) {
+  if (chatRooms[roomName]) {
     return res.status(400).json({ message: 'Room already exists' });
   }
 
-  rooms.push(roomName);
+  chatRooms[roomName] = [];
   res.status(201).json({ message: 'Room created successfully', roomName });
 });
 
 // API to get list of all rooms
 app.get('/rooms', (req, res) => {
-  res.json({ rooms });
+  res.json({ chatRooms });
 });
 
 app.post('/register', async (req, res) => {
