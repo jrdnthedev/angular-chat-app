@@ -1,4 +1,6 @@
 <div class="chat-container">
+  <h2>{{ roomTitle }} room</h2>
+  <button (click)="back()">Back</button>
   @for(item of chatData; track $index) {
   <app-chat [chat]="item"></app-chat>
   }

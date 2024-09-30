@@ -4,6 +4,7 @@ import { ChatComponent } from '../chat/chat.component';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-chat-room',
@@ -18,22 +19,28 @@ export class ChatRoomComponent {
   activeRoom = '';
   subscription: SubscriptionLike[] = [];
   user = 'James';
+  roomTitle = 'Chat Room';
 
   constructor(
     private websocketService: WebsocketService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
     console.log('Chat room component');
     this.subscription.push(
       this.route.params.subscribe((params) => {
-        console.log('Room ID', params['roomId']);
+        this.roomTitle = params['roomId'];
         this.activeRoom = params['roomId'];
       })
     );
     this.retrievePreviousMessages();
     this.onNewMessage();
+  }
+
+  back(): void {
+    this.location.back();
   }
 
   retrievePreviousMessages(): void {
