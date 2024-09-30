@@ -33,17 +33,18 @@ export class RoomSelectionComponent {
         .get<{ chatRooms: string[] }>('http://localhost:3000/rooms')
         .subscribe((response) => {
           this.rooms = response.chatRooms;
-          console.log('Rooms:', this.rooms);
         })
     );
   }
-  objectEntries(obj: any): [string, string][] {
-    return Object.entries(obj);
-  }
 
   objectKeys(obj: any): string[] {
-    return Object.keys(obj);
+    if (obj && typeof obj === 'object') {
+      return Object.keys(obj);
+    } else {
+      return []; // Return an empty array if obj is null, undefined, or not an object
+    }
   }
+
   createRoom() {
     if (this.newRoomName.trim() === '') {
       return;

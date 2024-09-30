@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { Chat } from '../../types/types';
 
 @Component({
   selector: 'app-chat',
@@ -11,9 +12,5 @@ import { Component, Input } from '@angular/core';
 export class ChatComponent {
   @Input() chat!: Chat;
 
-  ngOnInit(): void {
-    console.log('Chat component initialized', this.chat);
-  }
+  ngOnInit(): void {}
 }
-
-type Chat = { user: string; message: string; timestamp: Date };
