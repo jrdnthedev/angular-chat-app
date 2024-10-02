@@ -15,7 +15,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
-  };
+};
 
 const socketOptions = {
   cors: {
@@ -25,13 +25,13 @@ const socketOptions = {
     credentials: true
   }
 };
+
 app.use(express.json());
 app.use(cors(corsOptions));
 
 const server = http.createServer(app);
 
 const io = socketIo(server, socketOptions);
-
 
 io.on('connection', (socket) => {
   console.log('A user connected');
@@ -145,7 +145,6 @@ const authMiddleware = (req, res, next) => {
 app.get('/protected-route', authMiddleware, (req, res) => {
   res.status(200).json({ message: `Hello, ${req.user.username}` });
 });
-
 
 server.listen(3000, () => {
   console.log('Server is running on port 3000');
