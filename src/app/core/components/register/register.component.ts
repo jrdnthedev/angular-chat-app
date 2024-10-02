@@ -40,6 +40,7 @@ export class RegisterComponent {
     } else {
       console.log('Passwords do not match');
     }
+    this.registerForm.reset();
   }
 
   ngOnDestroy() {

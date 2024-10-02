@@ -35,6 +35,7 @@ export class LoginComponent {
           console.log(response);
         });
     }
+    this.loginForm.reset();
   }
 
   ngOnDestroy() {
