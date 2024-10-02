@@ -42,8 +42,8 @@ io.on('connection', (socket) => {
     console.log(`User joined room ${room}`);
 
     if (!chatRooms[room]) {
-      chatRooms[room] = [];
-      // return socket.emit('error', 'Room does not exist');
+      // chatRooms[room] = [];
+      return socket.emit('error', 'Room does not exist');
     }
 
     socket.emit('previousMessage', chatRooms[room]);
@@ -80,6 +80,10 @@ app.post('/createRoom', (req, res) => {
 // API to get list of all rooms
 app.get('/rooms', (req, res) => {
   res.json({ chatRooms });
+});
+
+app.get('/users', (req, res) => {
+  res.json({ users });
 });
 
 app.post('/register', async (req, res) => {
