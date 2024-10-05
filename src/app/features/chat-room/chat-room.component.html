@@ -3,7 +3,7 @@
   <button (click)="back()">Back</button>
   @for(item of chatData; track $index) {
   <app-chat [chat]="item"></app-chat>
-  } @if(isLoggedIn) {
+  } @if(isLoggedIn$ | async) {
   <app-message-input [room]="roomTitle" [user]="user"></app-message-input>
   }
 </div>

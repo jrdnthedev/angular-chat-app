@@ -1,24 +1,11 @@
-<app-form form>
-  <h1>Login</h1>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="field">
-      <label for="username">Username</label>
-      <input type="text" id="username" formControlName="username" required />
-    </div>
-    <div class="field">
-      <div class="grid--50-50">
-        <label for="password">Password</label>
-        <div class="reset-pass">
-          <a href="#">Forgot your password?</a>
-        </div>
-      </div>
-      <input
-        type="password"
-        id="password"
-        formControlName="password"
-        required
-      />
-    </div>
-    <button type="submit">Login</button>
-  </form>
-</app-form>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="field">
+    <label for="username">Username</label>
+    <input type="text" id="username" formControlName="username" required />
+  </div>
+  <div class="field">
+    <label for="password">Password</label>
+    <input type="password" id="password" formControlName="password" required />
+  </div>
+  <button type="submit">Login</button>
+</form>

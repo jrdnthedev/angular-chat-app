@@ -4,11 +4,12 @@ import { StoreService } from './core/services/store/store.service';
 import { AuthService } from './core/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
+import { LoginComponent } from './core/components/login/login.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, CommonModule],
+  imports: [RouterLink, RouterOutlet, CommonModule, LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })

@@ -3,15 +3,15 @@ import { WebsocketService } from '../../core/services/websocket/websocket.servic
 import { ChatComponent } from '../chat/chat.component';
 import { MessageInputComponent } from '../message-input/message-input.component';
 import { ActivatedRoute } from '@angular/router';
-import { SubscriptionLike } from 'rxjs';
-import { Location } from '@angular/common';
+import { Observable, SubscriptionLike } from 'rxjs';
+import { CommonModule, Location } from '@angular/common';
 import { StoreService } from '../../core/services/store/store.service';
 import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-chat-room',
   standalone: true,
-  imports: [ChatComponent, MessageInputComponent],
+  imports: [ChatComponent, MessageInputComponent, CommonModule],
   templateUrl: './chat-room.component.html',
   styleUrl: './chat-room.component.scss',
 })
@@ -21,7 +21,7 @@ export class ChatRoomComponent {
   subscription: SubscriptionLike[] = [];
   user = 'User';
   roomTitle = 'Chat Room';
-  isLoggedIn = false;
+  isLoggedIn$!: Observable<boolean>;
 
   constructor(
     private websocketService: WebsocketService,
@@ -44,7 +44,7 @@ export class ChatRoomComponent {
     );
     this.retrievePreviousMessages();
     this.onNewMessage();
-    this.isLoggedIn = this.auth.isLoggedIn();
+    this.isLoggedIn$ = this.store.isLoggedIn$;
   }
 
   back(): void {
