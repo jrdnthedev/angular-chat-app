@@ -5,6 +5,8 @@ import { MessageInputComponent } from '../message-input/message-input.component'
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike } from 'rxjs';
 import { Location } from '@angular/common';
+import { StoreService } from '../../core/services/store/store.service';
+import { AuthService } from '../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-chat-room',
@@ -16,26 +18,33 @@ import { Location } from '@angular/common';
 export class ChatRoomComponent {
   chatData: { user: string; message: string; timestamp: Date }[] = [];
   message = '';
-  activeRoom = '';
   subscription: SubscriptionLike[] = [];
-  user = 'James';
+  user = 'User';
   roomTitle = 'Chat Room';
+  isLoggedIn = false;
 
   constructor(
     private websocketService: WebsocketService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private store: StoreService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
     this.subscription.push(
       this.route.params.subscribe((params) => {
         this.roomTitle = params['roomId'];
-        this.activeRoom = params['roomId'];
+      })
+    );
+    this.subscription.push(
+      this.store.username.subscribe((username) => {
+        this.user = username;
       })
     );
     this.retrievePreviousMessages();
     this.onNewMessage();
+    this.isLoggedIn = this.auth.isLoggedIn();
   }
 
   back(): void {

@@ -53,7 +53,7 @@ io.on('connection', (socket) => {
     const { room, user, message } = data;
 
     // Add the new message to the room's message array
-    const newMessage = { user, message, timestamp: new Date() };
+    const newMessage = { user, message, room, timestamp: new Date() };
     chatRooms[room].push(newMessage);
 
     // Broadcast the message to all users in the room
@@ -122,7 +122,8 @@ app.post('/login', async (req, res) => {
 
   // Generate a JWT token
   const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
-  res.status(200).json({ token });
+  user.token = token;
+  res.status(200).json({ user });
 });
 
 const authMiddleware = (req, res, next) => {

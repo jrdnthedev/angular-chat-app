@@ -8,6 +8,9 @@ import {
 } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { SubscriptionLike } from 'rxjs';
+import { User } from '../../../types/types';
+import { StoreService } from '../../services/store/store.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -24,21 +27,29 @@ export class LoginComponent {
 
   subscription!: SubscriptionLike;
 
-  constructor(private http: HttpClient) {}
+  constructor(private auth: AuthService, private store: StoreService) {}
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
-      this.subscription = this.http
-        .post('http://localhost:3000/login', this.loginForm.value)
+      const username = this.loginForm.value.username!;
+      const password = this.loginForm.value.password!;
+      this.subscription = this.auth
+        .login(username, password)
         .subscribe((response) => {
           console.log(response);
+          this.auth.setToken(response.token);
+          this.store.setUser({
+            username: username,
+            password: password,
+            isLoggedIn: true,
+            token: response.token,
+          });
         });
     }
     this.loginForm.reset();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.subscription.unsubscribe();
+  // }
 }

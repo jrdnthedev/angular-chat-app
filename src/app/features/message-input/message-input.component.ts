@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class MessageInputComponent {
   message: string = '';
   @Input() room: string = '';
-  user = 'James';
+  @Input() user = 'James';
   constructor(private websocketService: WebsocketService) {}
 
   sendMessage(): void {

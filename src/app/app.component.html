@@ -2,8 +2,14 @@
   <header>
     <div>
       <a routerLink="/" routerLinkActive="active">Home</a>
-      <a routerLink="/login" routerLinkActive="active">Login</a>
+
       <a routerLink="/register" routerLinkActive="active">Register</a>
+      @if(isLoggedIn$ | async) {
+      <span> user: {{ username }} </span>
+      <button (click)="logout()">Logout</button>
+      } @else {
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      }
     </div>
   </header>
   <main class="main">

@@ -30,7 +30,7 @@ export class WebsocketService {
 
   // Retrieve previous messages from the room
   onPreviousMessages(): Observable<
-    { user: string; message: string; timestamp: Date }[]
+    { user: string; message: string; room: string; timestamp: Date }[]
   > {
     return new Observable((observer) => {
       this.socket.on('previousMessage', (messages) => {

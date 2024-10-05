@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionLike } from 'rxjs';
+import { StoreService } from '../../services/store/store.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-room-selection',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './room-selection.component.html',
   styleUrl: './room-selection.component.scss',
 })
@@ -16,12 +18,16 @@ export class RoomSelectionComponent {
   rooms!: {};
   newRoomName = '';
   subscriptions: SubscriptionLike[] = [];
+  isLoggedIn$;
 
   constructor(
     private websocketService: WebsocketService,
     private router: Router,
-    private http: HttpClient
-  ) {}
+    private http: HttpClient,
+    private store: StoreService
+  ) {
+    this.isLoggedIn$ = this.store.isLoggedIn$;
+  }
 
   ngOnInit() {
     this.loadRooms();

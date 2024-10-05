@@ -36,14 +36,13 @@ export class RegisterComponent {
         .subscribe((response) => {
           console.log(response);
         });
-      console.log(this.registerForm.value);
     } else {
       console.log('Passwords do not match');
     }
     this.registerForm.reset();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+  // ngOnDestroy() {
+  //   this.subscription.unsubscribe();
+  // }
 }

@@ -3,8 +3,12 @@
 
   <!-- Room Creation Form -->
   <div class="room-creation">
+    @if(isLoggedIn$ | async) {
     <input [(ngModel)]="newRoomName" placeholder="Enter room name" />
     <button (click)="createRoom()">Create Room</button>
+    } @else {
+    <p>Login to create or join a room</p>
+    }
   </div>
 
   <!-- Available Rooms List -->
