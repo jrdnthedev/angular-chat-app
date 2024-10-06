@@ -1,4 +1,4 @@
-<div class="message">
+<div class="message" [ngClass]="isLoggedInUser === chat.user ? 'me' : 'you'">
   <p class="message-header">
     <span class="username">{{ chat.user }}</span>
     <span class="time">{{ chat.timestamp | date : "short" }}</span>

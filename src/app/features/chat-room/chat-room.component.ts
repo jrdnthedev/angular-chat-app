@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, SubscriptionLike } from 'rxjs';
 import { CommonModule, Location } from '@angular/common';
 import { StoreService } from '../../core/services/store/store.service';
-import { AuthService } from '../../core/services/auth/auth.service';
+import { Sender } from '../../types/types';
 
 @Component({
   selector: 'app-chat-room',
@@ -16,7 +16,7 @@ import { AuthService } from '../../core/services/auth/auth.service';
   styleUrl: './chat-room.component.scss',
 })
 export class ChatRoomComponent {
-  chatData: { user: string; message: string; timestamp: Date }[] = [];
+  chatData: Sender[] = [];
   message = '';
   subscription: SubscriptionLike[] = [];
   user = 'User';
@@ -27,8 +27,7 @@ export class ChatRoomComponent {
     private websocketService: WebsocketService,
     private route: ActivatedRoute,
     private location: Location,
-    private store: StoreService,
-    private auth: AuthService
+    private store: StoreService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +54,7 @@ export class ChatRoomComponent {
     this.subscription.push(
       this.websocketService.onPreviousMessages().subscribe((message) => {
         this.chatData = message;
+        console.log(this.chatData);
       })
     );
   }

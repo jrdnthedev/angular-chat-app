@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { Sender } from '../../../types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class WebsocketService {
     this.socket.emit('sendMessage', { room, user, message });
   }
 
-  onMessage(): Observable<{ user: string; message: string; timestamp: Date }> {
+  onMessage(): Observable<Sender> {
     return new Observable((observer) => {
       this.socket.on('receiveMessage', (data) => {
         observer.next(data);
@@ -29,9 +30,7 @@ export class WebsocketService {
   }
 
   // Retrieve previous messages from the room
-  onPreviousMessages(): Observable<
-    { user: string; message: string; room: string; timestamp: Date }[]
-  > {
+  onPreviousMessages(): Observable<Sender[]> {
     return new Observable((observer) => {
       this.socket.on('previousMessage', (messages) => {
         observer.next(messages);

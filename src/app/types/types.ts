@@ -7,7 +7,7 @@ export type User = {
 };
 
 export type Sender = {
-  username: string;
+  user: string;
   message: string;
   room: string;
   timestamp: Date;

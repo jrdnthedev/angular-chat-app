@@ -2,7 +2,7 @@
   <h2>{{ roomTitle }} room</h2>
   <button (click)="back()">Back</button>
   @for(item of chatData; track $index) {
-  <app-chat [chat]="item"></app-chat>
+  <app-chat [chat]="item" [isLoggedInUser]="user"></app-chat>
   } @if(isLoggedIn$ | async) {
   <app-message-input [room]="roomTitle" [user]="user"></app-message-input>
   }

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Chat } from '../../types/types';
+import { Sender } from '../../types/types';
 
 @Component({
   selector: 'app-chat',
@@ -10,7 +10,7 @@ import { Chat } from '../../types/types';
   styleUrl: './chat.component.scss',
 })
 export class ChatComponent {
-  @Input() chat!: Chat;
-
+  @Input() chat!: Sender;
+  @Input() isLoggedInUser!: string;
   ngOnInit(): void {}
 }
