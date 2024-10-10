@@ -1,1 +1,12 @@
-<p>modal works!</p>
+<dialog #dialog>
+  <header>
+    <button (click)="close()">X</button>
+  </header>
+  <section>
+    <h2>{{ title }}</h2>
+    <p>{{ message }}</p>
+  </section>
+  <footer>
+    <button (click)="close()">Close</button>
+  </footer>
+</dialog>

@@ -1,9 +1,18 @@
 <app-form form>
   <h1>Register</h1>
   <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <div class="field">
+    <div
+      class="field"
+      [ngClass]="registerForm.get('username')?.errors?.['serverError']?'error':''"
+    >
       <label for="username">Username</label>
       <input type="text" id="username" formControlName="username" required />
+      @if(registerForm.get('username')?.errors?.['serverError'] &&
+      registerForm.get('username')?.touched) {
+      <span>
+        <p>{{ registerForm.get('username')?.errors?.['serverError'] }}</p>
+      </span>
+      }
     </div>
     <div class="field">
       <div>

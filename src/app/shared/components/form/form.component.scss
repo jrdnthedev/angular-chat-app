@@ -67,6 +67,14 @@
           rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
           rgba(0, 0, 0, 0) 0px 0px 0px 0px;
       }
+      &.error {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 0.2rem;
+        input {
+          border: 2px solid red;
+        }
+      }
     }
 
     button[type="submit"].primary {

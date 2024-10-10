@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import { FormComponent } from '../../../shared/components/form/form.component';
 import {
   FormControl,
@@ -9,6 +9,7 @@ import {
 import { SubscriptionLike } from 'rxjs';
 import { StoreService } from '../../services/store/store.service';
 import { AuthService } from '../../services/auth/auth.service';
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +23,13 @@ export class LoginComponent {
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
   });
-
   subscription!: SubscriptionLike;
 
-  constructor(private auth: AuthService, private store: StoreService) {}
+  constructor(
+    private auth: AuthService,
+    private store: StoreService,
+    private ref: ViewContainerRef
+  ) {}
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -44,7 +48,8 @@ export class LoginComponent {
         },
         error: (error) => {
           // Handle the error here
-          console.error('Login failed:', error.error.message);
+          const modal = this.ref.createComponent(ModalComponent);
+          modal.setInput('message', error.error.message);
         },
         complete: () => {
           // Optional: Handle completion if necessary

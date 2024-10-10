@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,11 +8,12 @@ import {
 import { FormComponent } from '../../../shared/components/form/form.component';
 import { HttpClient } from '@angular/common/http';
 import { SubscriptionLike } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, FormComponent],
+  imports: [ReactiveFormsModule, FormComponent, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -23,7 +24,7 @@ export class RegisterComponent {
     confirmPassword: new FormControl('', Validators.required),
   });
   subscription!: SubscriptionLike;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private ref: ViewContainerRef) {}
 
   onSubmit() {
     if (
@@ -36,6 +37,12 @@ export class RegisterComponent {
         .subscribe({
           next: (response) => {
             console.log(response);
+          },
+          error: (error) => {
+            this.registerForm
+              .get('username')
+              ?.setErrors({ invalid: true, serverError: error.error.message });
+            this.registerForm.get('username')?.markAsTouched();
           },
         });
     } else {
