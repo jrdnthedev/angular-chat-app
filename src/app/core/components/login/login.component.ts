@@ -31,9 +31,8 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const username = this.loginForm.value.username!;
       const password = this.loginForm.value.password!;
-      this.subscription = this.auth
-        .login(username, password)
-        .subscribe((response) => {
+      this.subscription = this.auth.login(username, password).subscribe({
+        next: (response) => {
           console.log(response);
           this.auth.setToken(response.token);
           this.store.setUser({
@@ -42,7 +41,16 @@ export class LoginComponent {
             isLoggedIn: true,
             token: response.token,
           });
-        });
+        },
+        error: (error) => {
+          // Handle the error here
+          console.error('Login failed:', error.error.message);
+        },
+        complete: () => {
+          // Optional: Handle completion if necessary
+          console.log('Login request completed');
+        },
+      });
     }
     this.loginForm.reset();
   }

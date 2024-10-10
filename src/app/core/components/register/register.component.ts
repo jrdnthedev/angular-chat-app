@@ -33,8 +33,10 @@ export class RegisterComponent {
     ) {
       this.subscription = this.http
         .post('http://localhost:3000/register', this.registerForm.value)
-        .subscribe((response) => {
-          console.log(response);
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+          },
         });
     } else {
       console.log('Passwords do not match');

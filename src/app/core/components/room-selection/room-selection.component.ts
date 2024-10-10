@@ -37,8 +37,10 @@ export class RoomSelectionComponent {
     this.subscriptions.push(
       this.http
         .get<{ chatRooms: string[] }>('http://localhost:3000/rooms')
-        .subscribe((response) => {
-          this.rooms = response.chatRooms;
+        .subscribe({
+          next: (response) => {
+            this.rooms = response.chatRooms;
+          },
         })
     );
   }

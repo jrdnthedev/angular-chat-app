@@ -32,13 +32,17 @@ export class ChatRoomComponent {
 
   ngOnInit(): void {
     this.subscription.push(
-      this.route.params.subscribe((params) => {
-        this.roomTitle = params['roomId'];
+      this.route.params.subscribe({
+        next: (params) => {
+          this.roomTitle = params['roomId'];
+        },
       })
     );
     this.subscription.push(
-      this.store.username.subscribe((username) => {
-        this.user = username;
+      this.store.username.subscribe({
+        next: (username) => {
+          this.user = username;
+        },
       })
     );
     this.retrievePreviousMessages();
@@ -52,17 +56,21 @@ export class ChatRoomComponent {
 
   retrievePreviousMessages(): void {
     this.subscription.push(
-      this.websocketService.onPreviousMessages().subscribe((message) => {
-        this.chatData = message;
-        console.log(this.chatData);
+      this.websocketService.onPreviousMessages().subscribe({
+        next: (message) => {
+          this.chatData = message;
+          console.log(this.chatData);
+        },
       })
     );
   }
 
   onNewMessage(): void {
     this.subscription.push(
-      this.websocketService.onMessage().subscribe((message) => {
-        this.chatData.push(message);
+      this.websocketService.onMessage().subscribe({
+        next: (message) => {
+          this.chatData.push(message);
+        },
       })
     );
   }
