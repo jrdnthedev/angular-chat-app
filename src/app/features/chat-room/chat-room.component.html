@@ -1,9 +1,13 @@
 <div class="chat-container">
   <h2>{{ roomTitle }} room</h2>
   <button (click)="back()">Back</button>
-  @for(item of chatData; track $index) {
-  <app-chat [chat]="item" [isLoggedInUser]="user"></app-chat>
-  } @if(isLoggedIn$ | async) {
-  <app-message-input [room]="roomTitle" [user]="user"></app-message-input>
-  }
+  <div id="chatmessge-wrapper">
+    @for(item of chatData; track $index) {
+    <app-chat [chat]="item" [isLoggedInUser]="user"></app-chat>
+    } @if(isLoggedIn$ | async) {
+    <app-message-input [room]="roomTitle" [user]="user"></app-message-input>
+    } @else {
+    <p>Please login to send messages</p>
+    }
+  </div>
 </div>

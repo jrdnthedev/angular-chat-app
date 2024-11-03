@@ -19,3 +19,9 @@ button {
   border: none;
   cursor: pointer;
 }
+
+#chatmessge-wrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
