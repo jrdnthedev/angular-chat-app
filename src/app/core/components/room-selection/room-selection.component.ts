@@ -3,7 +3,7 @@ import { WebsocketService } from '../../services/websocket/websocket.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { SubscriptionLike } from 'rxjs';
+import { Observable, SubscriptionLike } from 'rxjs';
 import { StoreService } from '../../services/store/store.service';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './room-selection.component.scss',
 })
 export class RoomSelectionComponent {
-  rooms!: {};
+  rooms$!: Observable<{}>;
   newRoomName = '';
   subscriptions: SubscriptionLike[] = [];
   isLoggedIn$;
@@ -36,10 +36,10 @@ export class RoomSelectionComponent {
   loadRooms() {
     this.subscriptions.push(
       this.http
-        .get<{ chatRooms: string[] }>('http://localhost:3000/rooms')
+        .get<{ chatRooms: Observable<{}> }>('http://localhost:3000/rooms')
         .subscribe({
           next: (response) => {
-            this.rooms = response.chatRooms;
+            this.rooms$ = response.chatRooms;
           },
         })
     );
@@ -64,10 +64,7 @@ export class RoomSelectionComponent {
         })
         .subscribe({
           next: () => {
-            this.rooms = {
-              ...this.rooms,
-              [this.newRoomName]: this.newRoomName,
-            };
+            this.loadRooms();
             this.newRoomName = ''; // Reset input field
           },
           error: (error) => {

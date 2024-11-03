@@ -15,7 +15,7 @@
   <div class="room-list">
     <h3>Available Rooms</h3>
     <ul>
-      @for(room of objectKeys(rooms); track $index) {
+      @for(room of objectKeys(rooms$); track $index) {
       <li>
         <button (click)="joinRoom(room)">{{ room }}</button>
       </li>

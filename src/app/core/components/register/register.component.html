@@ -14,7 +14,10 @@
       </span>
       }
     </div>
-    <div class="field">
+    <div
+      class="field"
+      [ngClass]="registerForm.get('password')?.errors?.['serverError']?'error':''"
+    >
       <div>
         <label for="password">Password</label>
       </div>
@@ -24,8 +27,17 @@
         formControlName="password"
         required
       />
+      @if(registerForm.get('password')?.errors?.['serverError'] &&
+      registerForm.get('password')?.touched) {
+      <span>
+        <p>{{ registerForm.get('password')?.errors?.['serverError'] }}</p>
+      </span>
+      }
     </div>
-    <div class="field">
+    <div
+      class="field"
+      [ngClass]="registerForm.get('confirmPassword')?.errors?.['serverError']?'error':''"
+    >
       <label for="confirmPassword">Confirm Password</label>
       <input
         type="password"
@@ -33,6 +45,14 @@
         formControlName="confirmPassword"
         required
       />
+      @if(registerForm.get('confirmPassword')?.errors?.['serverError'] &&
+      registerForm.get('confirmPassword')?.touched) {
+      <span>
+        <p>
+          {{ registerForm.get('confirmPassword')?.errors?.['serverError'] }}
+        </p>
+      </span>
+      }
     </div>
     <button type="submit" class="primary">Register</button>
   </form>
