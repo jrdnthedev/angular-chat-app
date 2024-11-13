@@ -3,9 +3,12 @@
   <button (click)="back()">Back</button>
   <div id="chatmessge-wrapper">
     @for(item of chatData; track $index) {
-    <app-chat [chat]="item" [isLoggedInUser]="user"></app-chat>
+    <app-chat [chat]="item" [isLoggedInUser]="user$"></app-chat>
     } @if(isLoggedIn$ | async) {
-    <app-message-input [room]="roomTitle" [user]="user"></app-message-input>
+    <app-message-input
+      [room]="roomTitle"
+      [user]="user$ | async"
+    ></app-message-input>
     } @else {
     <p>Please login to send messages</p>
     }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { WebsocketService } from '../../core/services/websocket/websocket.service';
 import { ChatComponent } from '../chat/chat.component';
 import { MessageInputComponent } from '../message-input/message-input.component';
@@ -19,12 +19,12 @@ export class ChatRoomComponent {
   chatData: Sender[] = [];
   message = '';
   subscription: SubscriptionLike[] = [];
-  user = 'User';
+  user$!: Observable<string>;
   roomTitle = 'Chat Room';
   isLoggedIn$!: Observable<boolean>;
+  private websocketService = inject(WebsocketService);
 
   constructor(
-    private websocketService: WebsocketService,
     private route: ActivatedRoute,
     private location: Location,
     private store: StoreService
@@ -38,13 +38,14 @@ export class ChatRoomComponent {
         },
       })
     );
-    this.subscription.push(
-      this.store.username.subscribe({
-        next: (username) => {
-          this.user = username;
-        },
-      })
-    );
+    this.user$ = this.store.username;
+    // this.subscription.push(
+    //   this.store.username.subscribe({
+    //     next: (username) => {
+    //       this.user = username;
+    //     },
+    //   })
+    // );
     this.retrievePreviousMessages();
     this.onNewMessage();
     this.isLoggedIn$ = this.store.isLoggedIn$;

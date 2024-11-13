@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Sender } from '../../types/types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -11,6 +12,6 @@ import { Sender } from '../../types/types';
 })
 export class ChatComponent {
   @Input() chat!: Sender;
-  @Input() isLoggedInUser!: string;
+  @Input() isLoggedInUser!: Observable<string>;
   ngOnInit(): void {}
 }
